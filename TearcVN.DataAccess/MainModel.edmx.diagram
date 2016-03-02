@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="98c1bf537eae48108a023e99288b2f2f" Name="Diagram1">
+        <EntityTypeShape EntityType="TearcVNModel.Estimation" Width="1.5" PointX="5.25" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TearcVNModel.Floor" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TearcVNModel.Product" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TearcVNModel.Project" Width="1.5" PointX="3" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TearcVNModel.User" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="TearcVNModel.UserRole" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="TearcVNModel.FK_Estimation_Floor" ManuallyRouted="false" />
+        <AssociationConnector Association="TearcVNModel.FK_Estimation_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="TearcVNModel.FK_Estimation_Project" ManuallyRouted="false" />
+        <AssociationConnector Association="TearcVNModel.FK_Estimation_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TearcVNModel.FK_Estimation_User_1" ManuallyRouted="false" />
+        <AssociationConnector Association="TearcVNModel.FK_Product_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TearcVNModel.FK_Product_User_1" ManuallyRouted="false" />
+        <AssociationConnector Association="TearcVNModel.FK_Project_User" ManuallyRouted="false" />
+        <AssociationConnector Association="TearcVNModel.FK_Project_User_1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

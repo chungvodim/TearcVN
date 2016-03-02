@@ -1,35 +1,81 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+using TearcVN.DataAccess;
+using TearcVN.Utils;
 
 namespace TearcVN.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private Entities db = new Entities();
+        public ActionResult Index()
         {
             return View();
         }
 
-        public IActionResult About()
+        [AllowAnonymous]
+        public ActionResult Login()
         {
-            ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
-        public IActionResult Contact()
+        [HttpPost]
+        public ActionResult Login(User model, string returnUrl)
         {
-            ViewData["Message"] = "Your contact page.";
+            // Lets first check if the Model is valid or not
+            if (ModelState.IsValid)
+            {
+                User user = db.Users.Where(x => x.Name == model.Name && x.Password == model.Password).FirstOrDefault();
 
+                if (user != null)
+                {
+                    CustomPrincipalSerializeModel serializeModel = new CustomPrincipalSerializeModel();
+                    serializeModel.Id = user.Id;
+                    serializeModel.RoleId = user.RoleId;
+                    serializeModel.Name = user.Name;
+                    string userData = SerializerHelper.JavaScriptSerialize(serializeModel);
+                    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, user.Name, DateTime.Now, DateTime.Now.AddMinutes(15), false, userData);
+
+                    string encTicket = FormsAuthentication.Encrypt(authTicket);
+                    HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
+                    Response.Cookies.Add(faCookie);
+
+                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/") && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
             return View();
         }
-
-        public IActionResult Error()
+        [Authorize]
+        public ActionResult LogOff()
         {
-            return View();
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index", "Home");
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

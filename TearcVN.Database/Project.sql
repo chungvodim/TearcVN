@@ -1,4 +1,14 @@
 ﻿CREATE TABLE [dbo].[Project]
 (
-	[Id] INT NOT NULL PRIMARY KEY
+	[Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Name] VARCHAR(50) NOT NULL,
+	[Address] VARCHAR(50) NULL,
+	[Investor] VARCHAR(50) NULL,
+	[Active] BIT NULL DEFAULT 1,
+	[CreatedTime] DATETIME NULL DEFAULT GETDATE(),
+	[LastUpdatedTime] DATETIME NULL DEFAULT GETDATE(),
+	[CreatedByUserID] INT NULL DEFAULT 1,
+	[LastUpdatedByUserID] INT NULL DEFAULT 1,
+	CONSTRAINT FK_Project_User FOREIGN KEY([CreatedByUserID]) REFERENCES [dbo].[User]([Id]),
+	CONSTRAINT FK_Project_User_1 FOREIGN KEY([LastUpdatedByUserID]) REFERENCES [dbo].[User]([Id]),
 )

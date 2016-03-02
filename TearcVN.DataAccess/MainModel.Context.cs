@@ -29,7 +29,9 @@ namespace TearcVN.DataAccess
         public virtual DbSet<Floor> Floors { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<ProductType> ProductTypes { get; set; }
     }
 }

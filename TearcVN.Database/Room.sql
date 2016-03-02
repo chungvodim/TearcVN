@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Floor]
+﻿CREATE TABLE [dbo].[Room]
 (
 	[Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	[Name] NVARCHAR(50) NOT NULL,
@@ -8,6 +8,6 @@
 	[LastUpdatedTime] DATETIME NULL DEFAULT GETDATE(),
 	[CreatedByUserID] INT NULL DEFAULT 1,
 	[LastUpdatedByUserID] INT NULL DEFAULT 1,
-	CONSTRAINT FK_Floor_User FOREIGN KEY([CreatedByUserID]) REFERENCES [dbo].[User]([Id]),
-	CONSTRAINT FK_Floor_User_1 FOREIGN KEY([LastUpdatedByUserID]) REFERENCES [dbo].[User]([Id]),
+	CONSTRAINT FK_Room_User FOREIGN KEY([CreatedByUserID]) REFERENCES [dbo].[User]([Id]),
+	CONSTRAINT FK_Room_User_1 FOREIGN KEY([LastUpdatedByUserID]) REFERENCES [dbo].[User]([Id]),
 )

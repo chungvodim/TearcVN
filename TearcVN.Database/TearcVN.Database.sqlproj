@@ -65,6 +65,8 @@
     <Build Include="Project.sql" />
     <Build Include="Estimation.sql" />
     <Build Include="Floor.sql" />
+    <Build Include="Room.sql" />
+    <Build Include="ProductType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TearcVN.Database.publish.xml" />

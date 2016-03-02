@@ -17,7 +17,8 @@ namespace TearcVN.Web.Controllers
         // GET: Floors
         public ActionResult Index()
         {
-            return View(db.Floors.ToList());
+            var floors = db.Floors.Include(f => f.User).Include(f => f.User1);
+            return View(floors.ToList());
         }
 
         // GET: Floors/Details/5
@@ -38,6 +39,8 @@ namespace TearcVN.Web.Controllers
         // GET: Floors/Create
         public ActionResult Create()
         {
+            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name");
+            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name");
             return View();
         }
 
@@ -46,7 +49,7 @@ namespace TearcVN.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Floor floor)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] Floor floor)
         {
             if (ModelState.IsValid)
             {
@@ -55,6 +58,8 @@ namespace TearcVN.Web.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", floor.CreatedByUserID);
+            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", floor.LastUpdatedByUserID);
             return View(floor);
         }
 
@@ -70,6 +75,8 @@ namespace TearcVN.Web.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", floor.CreatedByUserID);
+            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", floor.LastUpdatedByUserID);
             return View(floor);
         }
 
@@ -78,7 +85,7 @@ namespace TearcVN.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Floor floor)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] Floor floor)
         {
             if (ModelState.IsValid)
             {
@@ -86,6 +93,8 @@ namespace TearcVN.Web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", floor.CreatedByUserID);
+            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", floor.LastUpdatedByUserID);
             return View(floor);
         }
 

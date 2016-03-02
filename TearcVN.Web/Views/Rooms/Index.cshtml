@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TearcVN.DataAccess.Estimation>
+﻿@model IEnumerable<TearcVN.DataAccess.Room>
 
 @{
     ViewBag.Title = "Index";
@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Number)
+            @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Active)
@@ -27,22 +27,10 @@
             @Html.DisplayNameFor(model => model.LastUpdatedTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Floor.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Product.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Project.Name)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.User.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.User1.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Room.Name)
         </th>
         <th></th>
     </tr>
@@ -53,7 +41,7 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Number)
+            @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Active)
@@ -65,22 +53,10 @@
             @Html.DisplayFor(modelItem => item.LastUpdatedTime)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Floor.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Product.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.Name)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.User.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.User1.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Room.Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

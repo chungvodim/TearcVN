@@ -22,13 +22,14 @@ namespace TearcVN.DataAccess
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public int ProductTypeId { get; set; }
         public string Description { get; set; }
         public string Brand { get; set; }
         public string Code { get; set; }
         public string Specification { get; set; }
         public string Unit { get; set; }
-        public string Price { get; set; }
-        public string LaborCost { get; set; }
+        public Nullable<decimal> Price { get; set; }
+        public Nullable<decimal> LaborCost { get; set; }
         public Nullable<bool> Active { get; set; }
         public Nullable<System.DateTime> CreatedTime { get; set; }
         public Nullable<System.DateTime> LastUpdatedTime { get; set; }
@@ -39,5 +40,6 @@ namespace TearcVN.DataAccess
         public virtual ICollection<Estimation> Estimations { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual ProductType ProductType { get; set; }
     }
 }

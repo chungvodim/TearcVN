@@ -13,6 +13,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ProjectId" Type="int" Nullable="false" />
           <Property Name="FloorId" Type="int" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="Number" Type="int" />
           <Property Name="Active" Type="bit" />
@@ -27,6 +28,12 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="CreatedTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="CreatedByUserID" Type="int" />
+          <Property Name="LastUpdatedByUserID" Type="int" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -35,12 +42,26 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProductTypeId" Type="int" Nullable="false" />
           <Property Name="Brand" Type="nvarchar" MaxLength="50" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Specification" Type="nvarchar" MaxLength="50" />
           <Property Name="Unit" Type="nvarchar" MaxLength="10" />
-          <Property Name="Price" Type="nvarchar" MaxLength="10" />
-          <Property Name="LaborCost" Type="nvarchar" MaxLength="10" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="LaborCost" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="CreatedTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="CreatedByUserID" Type="int" />
+          <Property Name="LastUpdatedByUserID" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
           <Property Name="Active" Type="bit" />
           <Property Name="CreatedTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
@@ -55,6 +76,19 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="50" />
           <Property Name="Investor" Type="nvarchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="CreatedTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
+          <Property Name="CreatedByUserID" Type="int" />
+          <Property Name="LastUpdatedByUserID" Type="int" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
           <Property Name="Active" Type="bit" />
           <Property Name="CreatedTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
@@ -124,6 +158,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Estimation_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Estimation" Type="Self.Estimation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Estimation">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Estimation_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Estimation" Type="Self.Estimation" Multiplicity="*" />
@@ -148,6 +194,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Floor_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Floor" Type="Self.Floor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Floor">
+              <PropertyRef Name="CreatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Floor_User_1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Floor" Type="Self.Floor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Floor">
+              <PropertyRef Name="LastUpdatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductType">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Product_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -168,6 +250,30 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Product">
+              <PropertyRef Name="LastUpdatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductType_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductType">
+              <PropertyRef Name="CreatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductType_User_1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductType">
               <PropertyRef Name="LastUpdatedByUserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -196,11 +302,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Room_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="CreatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_User_1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="LastUpdatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="TearcVNModelStoreContainer">
           <EntitySet Name="Estimation" EntityType="Self.Estimation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Floor" EntityType="Self.Floor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Estimation_Floor" Association="Self.FK_Estimation_Floor">
@@ -215,6 +347,10 @@
             <End Role="Project" EntitySet="Project" />
             <End Role="Estimation" EntitySet="Estimation" />
           </AssociationSet>
+          <AssociationSet Name="FK_Estimation_Room" Association="Self.FK_Estimation_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="Estimation" EntitySet="Estimation" />
+          </AssociationSet>
           <AssociationSet Name="FK_Estimation_User" Association="Self.FK_Estimation_User">
             <End Role="User" EntitySet="User" />
             <End Role="Estimation" EntitySet="Estimation" />
@@ -222,6 +358,18 @@
           <AssociationSet Name="FK_Estimation_User_1" Association="Self.FK_Estimation_User_1">
             <End Role="User" EntitySet="User" />
             <End Role="Estimation" EntitySet="Estimation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Floor_User" Association="Self.FK_Floor_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Floor" EntitySet="Floor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Floor_User_1" Association="Self.FK_Floor_User_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Floor" EntitySet="Floor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductType" Association="Self.FK_Product_ProductType">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="Product" EntitySet="Product" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_User" Association="Self.FK_Product_User">
             <End Role="User" EntitySet="User" />
@@ -231,6 +379,14 @@
             <End Role="User" EntitySet="User" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProductType_User" Association="Self.FK_ProductType_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ProductType" EntitySet="ProductType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductType_User_1" Association="Self.FK_ProductType_User_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="ProductType" EntitySet="ProductType" />
+          </AssociationSet>
           <AssociationSet Name="FK_Project_User" Association="Self.FK_Project_User">
             <End Role="User" EntitySet="User" />
             <End Role="Project" EntitySet="Project" />
@@ -238,6 +394,14 @@
           <AssociationSet Name="FK_Project_User_1" Association="Self.FK_Project_User_1">
             <End Role="User" EntitySet="User" />
             <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_User" Association="Self.FK_Room_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_User_1" Association="Self.FK_Room_User_1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Room" EntitySet="Room" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -252,6 +416,7 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProjectId" Type="Int32" Nullable="false" />
           <Property Name="FloorId" Type="Int32" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="Number" Type="Int32" />
           <Property Name="Active" Type="Boolean" />
@@ -262,6 +427,7 @@
           <NavigationProperty Name="Floor" Relationship="Self.FK_Estimation_Floor" FromRole="Estimation" ToRole="Floor" />
           <NavigationProperty Name="Product" Relationship="Self.FK_Estimation_Product" FromRole="Estimation" ToRole="Product" />
           <NavigationProperty Name="Project" Relationship="Self.FK_Estimation_Project" FromRole="Estimation" ToRole="Project" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_Estimation_Room" FromRole="Estimation" ToRole="Room" />
           <NavigationProperty Name="User" Relationship="Self.FK_Estimation_User" FromRole="Estimation" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="Self.FK_Estimation_User_1" FromRole="Estimation" ToRole="User" />
         </EntityType>
@@ -271,7 +437,15 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="CreatedByUserID" Type="Int32" />
+          <Property Name="LastUpdatedByUserID" Type="Int32" />
           <NavigationProperty Name="Estimations" Relationship="Self.FK_Estimation_Floor" FromRole="Floor" ToRole="Estimation" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Floor_User" FromRole="Floor" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_Floor_User_1" FromRole="Floor" ToRole="User" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -279,13 +453,14 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductTypeId" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Specification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Unit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="LaborCost" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="LaborCost" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Active" Type="Boolean" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
           <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
@@ -294,6 +469,7 @@
           <NavigationProperty Name="Estimations" Relationship="Self.FK_Estimation_Product" FromRole="Product" ToRole="Estimation" />
           <NavigationProperty Name="User" Relationship="Self.FK_Product_User" FromRole="Product" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="Self.FK_Product_User_1" FromRole="Product" ToRole="User" />
+          <NavigationProperty Name="ProductType" Relationship="TearcVNModel.FK_Product_ProductType" FromRole="Product" ToRole="ProductType" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -312,6 +488,22 @@
           <NavigationProperty Name="User" Relationship="Self.FK_Project_User" FromRole="Project" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="Self.FK_Project_User_1" FromRole="Project" ToRole="User" />
         </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="CreatedByUserID" Type="Int32" />
+          <Property Name="LastUpdatedByUserID" Type="Int32" />
+          <NavigationProperty Name="Estimations" Relationship="Self.FK_Estimation_Room" FromRole="Room" ToRole="Estimation" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Room_User" FromRole="Room" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_Room_User_1" FromRole="Room" ToRole="User" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -329,10 +521,16 @@
           <Property Name="LastUpdatedByUserID" Type="Int32" />
           <NavigationProperty Name="Estimations" Relationship="Self.FK_Estimation_User" FromRole="User" ToRole="Estimation" />
           <NavigationProperty Name="Estimations1" Relationship="Self.FK_Estimation_User_1" FromRole="User" ToRole="Estimation" />
+          <NavigationProperty Name="Floors" Relationship="Self.FK_Floor_User" FromRole="User" ToRole="Floor" />
+          <NavigationProperty Name="Floors1" Relationship="Self.FK_Floor_User_1" FromRole="User" ToRole="Floor" />
           <NavigationProperty Name="Products" Relationship="Self.FK_Product_User" FromRole="User" ToRole="Product" />
           <NavigationProperty Name="Products1" Relationship="Self.FK_Product_User_1" FromRole="User" ToRole="Product" />
           <NavigationProperty Name="Projects" Relationship="Self.FK_Project_User" FromRole="User" ToRole="Project" />
           <NavigationProperty Name="Projects1" Relationship="Self.FK_Project_User_1" FromRole="User" ToRole="Project" />
+          <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_User" FromRole="User" ToRole="Room" />
+          <NavigationProperty Name="Rooms1" Relationship="Self.FK_Room_User_1" FromRole="User" ToRole="Room" />
+          <NavigationProperty Name="ProductTypes" Relationship="TearcVNModel.FK_ProductType_User" FromRole="User" ToRole="ProductType" />
+          <NavigationProperty Name="ProductTypes1" Relationship="TearcVNModel.FK_ProductType_User_1" FromRole="User" ToRole="ProductType" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -381,6 +579,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Estimation_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Estimation" Type="Self.Estimation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Estimation">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Estimation_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Estimation" Type="Self.Estimation" Multiplicity="*" />
@@ -401,6 +611,30 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Estimation">
+              <PropertyRef Name="LastUpdatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Floor_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Floor" Type="Self.Floor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Floor">
+              <PropertyRef Name="CreatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Floor_User_1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Floor" Type="Self.Floor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Floor">
               <PropertyRef Name="LastUpdatedByUserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -453,11 +687,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Room_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="CreatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_User_1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="LastUpdatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Estimations" EntityType="Self.Estimation" />
           <EntitySet Name="Floors" EntityType="Self.Floor" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
           <AssociationSet Name="FK_Estimation_Floor" Association="Self.FK_Estimation_Floor">
@@ -472,6 +731,10 @@
             <End Role="Project" EntitySet="Projects" />
             <End Role="Estimation" EntitySet="Estimations" />
           </AssociationSet>
+          <AssociationSet Name="FK_Estimation_Room" Association="Self.FK_Estimation_Room">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Estimation" EntitySet="Estimations" />
+          </AssociationSet>
           <AssociationSet Name="FK_Estimation_User" Association="Self.FK_Estimation_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Estimation" EntitySet="Estimations" />
@@ -479,6 +742,14 @@
           <AssociationSet Name="FK_Estimation_User_1" Association="Self.FK_Estimation_User_1">
             <End Role="User" EntitySet="Users" />
             <End Role="Estimation" EntitySet="Estimations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Floor_User" Association="Self.FK_Floor_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Floor" EntitySet="Floors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Floor_User_1" Association="Self.FK_Floor_User_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Floor" EntitySet="Floors" />
           </AssociationSet>
           <AssociationSet Name="FK_Product_User" Association="Self.FK_Product_User">
             <End Role="User" EntitySet="Users" />
@@ -496,7 +767,80 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
+          <AssociationSet Name="FK_Room_User" Association="Self.FK_Room_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_User_1" Association="Self.FK_Room_User_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <EntitySet Name="ProductTypes" EntityType="TearcVNModel.ProductType" />
+          <AssociationSet Name="FK_ProductType_User" Association="TearcVNModel.FK_ProductType_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ProductType" EntitySet="ProductTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductType_User_1" Association="TearcVNModel.FK_ProductType_User_1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="ProductType" EntitySet="ProductTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductType" Association="TearcVNModel.FK_Product_ProductType">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="CreatedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
+          <Property Name="CreatedByUserID" Type="Int32" />
+          <Property Name="LastUpdatedByUserID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="TearcVNModel.FK_ProductType_User" FromRole="ProductType" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="TearcVNModel.FK_ProductType_User_1" FromRole="ProductType" ToRole="User" />
+          <NavigationProperty Name="Products" Relationship="TearcVNModel.FK_Product_ProductType" FromRole="ProductType" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_ProductType_User">
+          <End Type="TearcVNModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="TearcVNModel.ProductType" Role="ProductType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductType">
+              <PropertyRef Name="CreatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductType_User_1">
+          <End Type="TearcVNModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="TearcVNModel.ProductType" Role="ProductType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductType">
+              <PropertyRef Name="LastUpdatedByUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductType">
+          <End Type="TearcVNModel.ProductType" Role="ProductType" Multiplicity="1" />
+          <End Type="TearcVNModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -510,6 +854,7 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="FloorId" ColumnName="FloorId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
@@ -523,14 +868,21 @@
           <EntitySetMapping Name="Floors">
             <EntityTypeMapping TypeName="TearcVNModel.Floor">
               <MappingFragment StoreEntitySet="Floor">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedByUserID" ColumnName="CreatedByUserID" />
+                <ScalarProperty Name="LastUpdatedByUserID" ColumnName="LastUpdatedByUserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="TearcVNModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductTypeId" ColumnName="ProductTypeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -555,6 +907,20 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Investor" ColumnName="Investor" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedByUserID" ColumnName="CreatedByUserID" />
+                <ScalarProperty Name="LastUpdatedByUserID" ColumnName="LastUpdatedByUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="TearcVNModel.Room">
+              <MappingFragment StoreEntitySet="Room">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
                 <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
@@ -589,7 +955,21 @@
                 <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
                 <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                </MappingFragment>
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypes">
+            <EntityTypeMapping TypeName="TearcVNModel.ProductType">
+              <MappingFragment StoreEntitySet="ProductType">
+                <ScalarProperty Name="LastUpdatedByUserID" ColumnName="LastUpdatedByUserID" />
+                <ScalarProperty Name="CreatedByUserID" ColumnName="CreatedByUserID" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="CreatedTime" ColumnName="CreatedTime" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
         </EntityContainerMapping>

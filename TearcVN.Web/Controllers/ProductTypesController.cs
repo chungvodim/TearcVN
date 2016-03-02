@@ -10,120 +10,116 @@ using TearcVN.DataAccess;
 
 namespace TearcVN.Web.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductTypesController : Controller
     {
         private Entities db = new Entities();
 
-        // GET: Products
+        // GET: ProductTypes
         public ActionResult Index()
         {
-            var products = db.Products.Include(p => p.User).Include(p => p.User1).Include(p => p.ProductType);
-            return View(products.ToList());
+            var productTypes = db.ProductTypes.Include(p => p.User).Include(p => p.User1);
+            return View(productTypes.ToList());
         }
 
-        // GET: Products/Details/5
+        // GET: ProductTypes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
-            if (product == null)
+            ProductType productType = db.ProductTypes.Find(id);
+            if (productType == null)
             {
                 return HttpNotFound();
             }
-            return View(product);
+            return View(productType);
         }
 
-        // GET: Products/Create
+        // GET: ProductTypes/Create
         public ActionResult Create()
         {
             ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name");
             ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name");
-            ViewBag.ProductTypeId = new SelectList(db.ProductTypes, "Id", "Name");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: ProductTypes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ProductTypeId,Description,Brand,Code,Specification,Unit,Price,LaborCost,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] Product product)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] ProductType productType)
         {
             if (ModelState.IsValid)
             {
-                db.Products.Add(product);
+                db.ProductTypes.Add(productType);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", product.CreatedByUserID);
-            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", product.LastUpdatedByUserID);
-            ViewBag.ProductTypeId = new SelectList(db.ProductTypes, "Id", "Name", product.ProductTypeId);
-            return View(product);
+            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", productType.CreatedByUserID);
+            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", productType.LastUpdatedByUserID);
+            return View(productType);
         }
 
-        // GET: Products/Edit/5
+        // GET: ProductTypes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
-            if (product == null)
+            ProductType productType = db.ProductTypes.Find(id);
+            if (productType == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", product.CreatedByUserID);
-            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", product.LastUpdatedByUserID);
-            ViewBag.ProductTypeId = new SelectList(db.ProductTypes, "Id", "Name", product.ProductTypeId);
-            return View(product);
+            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", productType.CreatedByUserID);
+            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", productType.LastUpdatedByUserID);
+            return View(productType);
         }
 
-        // POST: Products/Edit/5
+        // POST: ProductTypes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ProductTypeId,Description,Brand,Code,Specification,Unit,Price,LaborCost,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] Product product)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] ProductType productType)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(product).State = EntityState.Modified;
+                db.Entry(productType).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", product.CreatedByUserID);
-            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", product.LastUpdatedByUserID);
-            ViewBag.ProductTypeId = new SelectList(db.ProductTypes, "Id", "Name", product.ProductTypeId);
-            return View(product);
+            ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", productType.CreatedByUserID);
+            ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", productType.LastUpdatedByUserID);
+            return View(productType);
         }
 
-        // GET: Products/Delete/5
+        // GET: ProductTypes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
-            if (product == null)
+            ProductType productType = db.ProductTypes.Find(id);
+            if (productType == null)
             {
                 return HttpNotFound();
             }
-            return View(product);
+            return View(productType);
         }
 
-        // POST: Products/Delete/5
+        // POST: ProductTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
+            ProductType productType = db.ProductTypes.Find(id);
+            db.ProductTypes.Remove(productType);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

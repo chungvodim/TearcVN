@@ -17,7 +17,7 @@ namespace TearcVN.Web.Controllers
         // GET: Estimations
         public ActionResult Index()
         {
-            var estimations = db.Estimations.Include(e => e.Floor).Include(e => e.Product).Include(e => e.Project).Include(e => e.User).Include(e => e.User1);
+            var estimations = db.Estimations.Include(e => e.Floor).Include(e => e.Product).Include(e => e.Project).Include(e => e.User).Include(e => e.User1).Include(e => e.Room);
             return View(estimations.ToList());
         }
 
@@ -44,6 +44,7 @@ namespace TearcVN.Web.Controllers
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name");
             ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name");
             ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name");
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
             return View();
         }
 
@@ -52,7 +53,7 @@ namespace TearcVN.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ProjectId,FloorId,ProductId,Number,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] Estimation estimation)
+        public ActionResult Create([Bind(Include = "Id,Name,ProjectId,FloorId,RoomId,ProductId,Number,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] Estimation estimation)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +67,7 @@ namespace TearcVN.Web.Controllers
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", estimation.ProjectId);
             ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", estimation.CreatedByUserID);
             ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", estimation.LastUpdatedByUserID);
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name", estimation.RoomId);
             return View(estimation);
         }
 
@@ -86,6 +88,7 @@ namespace TearcVN.Web.Controllers
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", estimation.ProjectId);
             ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", estimation.CreatedByUserID);
             ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", estimation.LastUpdatedByUserID);
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name", estimation.RoomId);
             return View(estimation);
         }
 
@@ -94,7 +97,7 @@ namespace TearcVN.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ProjectId,FloorId,ProductId,Number,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] Estimation estimation)
+        public ActionResult Edit([Bind(Include = "Id,Name,ProjectId,FloorId,RoomId,ProductId,Number,Active,CreatedTime,LastUpdatedTime,CreatedByUserID,LastUpdatedByUserID")] Estimation estimation)
         {
             if (ModelState.IsValid)
             {
@@ -107,6 +110,7 @@ namespace TearcVN.Web.Controllers
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Name", estimation.ProjectId);
             ViewBag.CreatedByUserID = new SelectList(db.Users, "Id", "Name", estimation.CreatedByUserID);
             ViewBag.LastUpdatedByUserID = new SelectList(db.Users, "Id", "Name", estimation.LastUpdatedByUserID);
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name", estimation.RoomId);
             return View(estimation);
         }
 

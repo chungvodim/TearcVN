@@ -12,26 +12,26 @@ namespace TearcVN.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Estimation
+    public partial class ProductType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ProductType()
+        {
+            this.Products = new HashSet<Product>();
+        }
+    
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ProjectId { get; set; }
-        public int FloorId { get; set; }
-        public int RoomId { get; set; }
-        public int ProductId { get; set; }
-        public Nullable<int> Number { get; set; }
+        public string Description { get; set; }
         public Nullable<bool> Active { get; set; }
         public Nullable<System.DateTime> CreatedTime { get; set; }
         public Nullable<System.DateTime> LastUpdatedTime { get; set; }
         public Nullable<int> CreatedByUserID { get; set; }
         public Nullable<int> LastUpdatedByUserID { get; set; }
     
-        public virtual Floor Floor { get; set; }
-        public virtual Product Product { get; set; }
-        public virtual Project Project { get; set; }
-        public virtual Room Room { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

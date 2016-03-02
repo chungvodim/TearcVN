@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Estimation]
 (
 	[Id] INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[Name] VARCHAR(50) NOT NULL,
+	[Name] NVARCHAR(50) NOT NULL,
 	[ProjectId] INT NOT NULL,
 	[FloorId] INT NOT NULL,
 	[ProductId] INT NOT NULL,

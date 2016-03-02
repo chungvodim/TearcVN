@@ -10,7 +10,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ProjectId" Type="int" Nullable="false" />
           <Property Name="FloorId" Type="int" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
@@ -33,14 +33,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="100" />
-          <Property Name="Brand" Type="varchar" MaxLength="50" />
-          <Property Name="Code" Type="varchar" MaxLength="50" />
-          <Property Name="Specification" Type="varchar" MaxLength="50" />
-          <Property Name="Unit" Type="varchar" MaxLength="10" />
-          <Property Name="Price" Type="varchar" MaxLength="10" />
-          <Property Name="LaborCost" Type="varchar" MaxLength="10" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="Brand" Type="nvarchar" MaxLength="50" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Specification" Type="nvarchar" MaxLength="50" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="10" />
+          <Property Name="Price" Type="nvarchar" MaxLength="10" />
+          <Property Name="LaborCost" Type="nvarchar" MaxLength="10" />
           <Property Name="Active" Type="bit" />
           <Property Name="CreatedTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
@@ -52,9 +52,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Address" Type="varchar" MaxLength="50" />
-          <Property Name="Investor" Type="varchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" />
+          <Property Name="Investor" Type="nvarchar" MaxLength="50" />
           <Property Name="Active" Type="bit" />
           <Property Name="CreatedTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
@@ -82,8 +82,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="100" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Active" Type="bit" />
           <Property Name="CreatedTime" Type="datetime" />
           <Property Name="LastUpdatedTime" Type="datetime" />
@@ -249,7 +249,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProjectId" Type="Int32" Nullable="false" />
           <Property Name="FloorId" Type="Int32" Nullable="false" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
@@ -278,14 +278,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Specification" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Unit" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Price" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="LaborCost" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Specification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Unit" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="LaborCost" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
           <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
@@ -300,9 +300,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Investor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Investor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
           <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
@@ -339,8 +339,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" />
           <Property Name="CreatedTime" Type="DateTime" Precision="3" />
           <Property Name="LastUpdatedTime" Type="DateTime" Precision="3" />
